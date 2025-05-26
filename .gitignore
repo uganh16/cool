@@ -1,0 +1,8 @@
+# Build directory
+build/
+
+# Test
+Testing/
+
+# Auto-generated files
+src/*.gen.cc
