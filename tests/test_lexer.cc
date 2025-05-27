@@ -29,16 +29,16 @@ TEST_P(LexerTest, VerifiesEachTokenIndividually) {
 
     EXPECT_EQ(token_type, expected.type)
       << "Token #" << i << " type mismatch\n"
-      << "Input: " << input << "\n"
+      << "Input: " << escape(input) << "\n"
       << "Position: line " << yylloc.line;
 
     EXPECT_EQ(yylloc.line, expected.line)
       << "Token #" << i << " line number mismatch\n"
-      << "Input: " << input << "\n";
+      << "Input: " << escape(input);
   }
 
   EXPECT_EQ(lexer.lex(&yylval, &yylloc), TOKID(END))
-    << "Input did not end with EOF: " << input;
+    << "Input did not end with EOF: " << escape(input);
 }
 
 INSTANTIATE_TEST_SUITE_P(

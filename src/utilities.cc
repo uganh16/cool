@@ -1,5 +1,29 @@
 #include "utilities.h"
 
+std::ostream& operator<<(std::ostream& out, const EscapedString& escaped) {
+  static const char* hex_chars = "0123456789abcdef";
+  for (char chr : escaped.sv) {
+    switch (chr) {
+      case '\b': out << "\\b"; break;
+      case '\t': out << "\\t"; break;
+      case '\n': out << "\\n"; break;
+      case '\f': out << "\\f"; break;
+      case '\"': out << "\\\""; break;
+      case '\\': out << "\\\\"; break;
+      default:
+        if (std::isprint(chr)) {
+          out << chr;
+        } else {
+          out << "\\x"
+              << hex_chars[(static_cast<unsigned char>(chr) >> 4) & 0x0f]
+              << hex_chars[ static_cast<unsigned char>(chr) & 0x0f];
+        }
+        break;
+    }
+  }
+  return out;
+}
+
 const char *token_to_string(int token) {
   switch (token) {
     case TOKID(END):      return "EOF";
@@ -63,9 +87,7 @@ void print_token(std::ostream& out, int token, const LexState::Value& yylval, co
       out << " " << std::get<long>(yylval);
       break;
     case TOKID(STRING):
-      out << " \"";
-      print_escaped_string(out, std::get<std::string>(yylval));
-      out << "\"";
+      out << " \"" << escape(std::get<std::string>(yylval)) << "\"";
       break;
     case TOKID(OBJECTID):
     case TOKID(TYPEID):
@@ -76,27 +98,4 @@ void print_token(std::ostream& out, int token, const LexState::Value& yylval, co
       break;
   }
   out << std::endl;
-}
-
-void print_escaped_string(std::ostream& out, const std::string& str) {
-  static const char* hex_chars = "0123456789abcdef";
-  for (char chr : str) {
-    switch (chr) {
-      case '\b': out << "\\b"; break;
-      case '\t': out << "\\t"; break;
-      case '\n': out << "\\n"; break;
-      case '\f': out << "\\f"; break;
-      case '\"': out << "\\\""; break;
-      case '\\': out << "\\\\"; break;
-      default:
-        if (std::isprint(chr)) {
-          out << chr;
-        } else {
-          out << "\\x"
-              << hex_chars[(static_cast<unsigned char>(chr) >> 4) & 0x0f]
-              << hex_chars[ static_cast<unsigned char>(chr) & 0x0f];
-        }
-        break;
-    }
-  }
 }
