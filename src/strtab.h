@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <string_view>
+#include <ostream>
 #include <unordered_set>
 
 class Symbol {

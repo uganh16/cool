@@ -7,7 +7,7 @@ This repository contains my implementation of a compiler for the Classroom Objec
 ## Dependencies
 
 + [CMake](https://cmake.org/) (>= 3.10): Build system
-+ [re2c](https://re2c.org/) (>= 4.2): Lexer generator
++ [re2c](https://re2c.org/) (>= 0.14): Lexer generator
 + **C++17** compatible compiler (GCC/Clang)
 + [GoogleTest](https://google.github.io/googletest/) (>= 1.10): Only required for testing
 
